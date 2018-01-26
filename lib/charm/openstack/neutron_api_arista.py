@@ -49,7 +49,7 @@ class IcehouseNeutronAPIAristaCharm(charms_openstack.charm.OpenStackCharm):
     name = 'neutron-api-arista'
     release = 'icehouse'
 
-    packages = ['neutron-common', 'neutron-plugin-ml2']
+    packages = ['neutron-common', 'neutron-plugin-ml2', 'python-pip']
 
     required_relations = ['neutron-plugin-api-subordinate']
 
@@ -81,6 +81,16 @@ class IcehouseNeutronAPIAristaCharm(charms_openstack.charm.OpenStackCharm):
             service_plugins=self.service_plugins,
             subordinate_configuration=inject_config)
 
+    def install(self):
+        """In addition to other commands, install our arista package.
+
+        TODO: add an http proxy?
+        TODO: add version
+        TODO: stick the pip package in the wheelhouse instead
+        """
+        pip_install(NETWORKING_ARISTA_PACKAGE)
+        super().install()
+
 
 class KiloNeutronAPIAristaCharm(IcehouseNeutronAPIAristaCharm):
     """For the kilo release we have an additional package to install:
@@ -88,12 +98,6 @@ class KiloNeutronAPIAristaCharm(IcehouseNeutronAPIAristaCharm):
     """
 
     release = 'kilo'
-
-    packages = ['neutron-common',
-                'neutron-plugin-ml2',
-                #'python-networking-arista',
-                ]
-
 
 class NewtonNeutronAPIAristaCharm(KiloNeutronAPIAristaCharm):
     """For Newton, the service_plugins on the configuration is different.
@@ -107,22 +111,7 @@ class NewtonNeutronAPIAristaCharm(KiloNeutronAPIAristaCharm):
                        'plugin.LoadBalancerPluginv2')
 
 class PikeNeutronAPIAristaCharm(NewtonNeutronAPIAristaCharm):
-    """
-    Just do the same thing for Pike.
-    """
+    """Nothing fancy for Pike."""
+    
     release = 'pike'
 
-    packages = ['neutron-common',
-                'neutron-plugin-ml2',
-                'python-pip'
-                ]
-
-
-    def install(self):
-        """
-        In addition to other commands, install our arista package.
-        """
-        pip_install(NETWORKING_ARISTA_PACKAGE)  # TODO: http proxy? Add version, also.
-        # TODO put pip package in wheelhouse. charm build should automatically pick it up.
-
-        super().install()
