@@ -116,16 +116,13 @@ class PikeNeutronAPIARISTACharm(NewtonNeutronAPIARISTACharm):
                 'neutron-plugin-ml2',
                 'python-pip'
                 ]
-    
+
 
     def install(self):
-        """ 
+        """
         In addition to other commands, install our arista package.
         """
         pip_install(NETWORKING_ARISTA_PACKAGE)  # TODO: http proxy? Add version, also.
-           # TODO put pip package in wheelhouse. charm build should automatically pick it up.
+        # TODO put pip package in wheelhouse. charm build should automatically pick it up.
 
         super().install()
-
-        
-
