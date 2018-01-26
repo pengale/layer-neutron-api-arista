@@ -53,7 +53,7 @@ class IcehouseNeutronAPIARISTACharm(charms_openstack.charm.OpenStackCharm):
 
     required_relations = ['neutron-plugin-api-subordinate', 'arista-controller']
 
-    restart_map = {ML2_CONF: []}
+    restart_map = {ML2_CONF: [], ML2_CONF_ARISTA: []}
     adapters_class = charms_openstack.adapters.OpenStackRelationAdapters
 
     # Custom configure for the class
