@@ -1,6 +1,6 @@
-name: neutron-api-odl
+name: neutron-api-arista
 subordinate: true
-summary: OpenStack Networking - OpenDayLight mechanism driver
+summary: OpenStack Networking - Arista Driver
 maintainer: OpenStack Charmers <openstack-charmers@lists.ubuntu.com>
 description: |
   Neutron is a virtual network service for OpenStack, and a part of
@@ -12,7 +12,7 @@ description: |
   advanced network capabilities (e.g., QoS, ACLs, network monitoring,
   etc.)
   .
-  This charm configures the neutron-api service with the OpenDayLight
+  This charm configures the neutron-api service with the Arista
   SDN solution.
 tags:
   - openstack
@@ -26,8 +26,6 @@ provides:
     interface: neutron-plugin-api-subordinate
     scope: container
 requires:
-  odl-controller:
-    interface: odl-controller-api
   container:
     interface: juju-info
     scope: container

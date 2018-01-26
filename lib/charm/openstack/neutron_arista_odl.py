@@ -18,6 +18,7 @@ import charmhelpers.contrib.openstack.utils as ch_utils
 
 
 ML2_CONF = '/etc/neutron/plugins/ml2/ml2_conf.ini'
+ML2_CONF_ARISTA = '/etc/neutron/plugins/ml2/ml2_conf_arista.ini'
 VLAN = 'vlan'
 VXLAN = 'vxlan'
 GRE = 'gre'
@@ -40,14 +41,14 @@ def choose_charm_class():
     return ch_utils.os_release('neutron-common')
 
 
-class IcehouseNeutronAPIODLCharm(charms_openstack.charm.OpenStackCharm):
+class IcehouseNeutronAPIARISTACharm(charms_openstack.charm.OpenStackCharm):
 
-    name = 'neutron-api-odl'
+    name = 'neutron-api-arista'
     release = 'icehouse'
 
     packages = ['neutron-common', 'neutron-plugin-ml2']
 
-    required_relations = ['neutron-plugin-api-subordinate', 'odl-controller']
+    required_relations = ['neutron-plugin-api-subordinate', 'arista-controller']
 
     restart_map = {ML2_CONF: []}
     adapters_class = charms_openstack.adapters.OpenStackRelationAdapters
@@ -71,27 +72,27 @@ class IcehouseNeutronAPIODLCharm(charms_openstack.charm.OpenStackCharm):
         }
 
         api_principle.configure_plugin(
-            neutron_plugin='odl',
+            neutron_plugin='ovs',
             core_plugin='neutron.plugins.ml2.plugin.Ml2Plugin',
             neutron_plugin_config='/etc/neutron/plugins/ml2/ml2_conf.ini',
             service_plugins=self.service_plugins,
             subordinate_configuration=inject_config)
 
 
-class KiloNeutronAPIODLCharm(IcehouseNeutronAPIODLCharm):
+class KiloNeutronAPIARISTACharm(IcehouseNeutronAPIARISTACharm):
     """For the kilo release we have an additional package to install:
-    'python-networking-odl'
+    'python-networking-arista'
     """
 
     release = 'kilo'
 
     packages = ['neutron-common',
                 'neutron-plugin-ml2',
-                'python-networking-odl',
+                #'python-networking-arista',
                 ]
 
 
-class NewtonNeutronAPIODLCharm(KiloNeutronAPIODLCharm):
+class NewtonNeutronAPIARISTACharm(KiloNeutronAPIARISTACharm):
     """For Newton, the service_plugins on the configuration is different.
     """
 
@@ -101,3 +102,10 @@ class NewtonNeutronAPIODLCharm(KiloNeutronAPIODLCharm):
     service_plugins = ('router,firewall,vpnaas,metering,'
                        'neutron_lbaas.services.loadbalancer.'
                        'plugin.LoadBalancerPluginv2')
+
+class PikeNeutronAPIARISTACharm(NewtonNeutronAPIARISTACharm):
+    """
+    Just do the same thing for Pike.
+    """
+    release = 'pike'
+

@@ -17,8 +17,8 @@ import charms.reactive as reactive
 import charms_openstack.charm as charm
 
 # This charm's library contains all of the handler code associated with
-# neutron_api_odl
-import charm.openstack.neutron_api_odl as neutron_api_odl
+# neutron_api_arista
+import charm.openstack.neutron_api_arista as neutron_api_arista
 
 
 charm.use_defaults(
@@ -27,21 +27,19 @@ charm.use_defaults(
     'update-status')
 
 
-@reactive.when('odl-controller.available')
-def render_config(*args):
-    with charm.provide_charm_instance() as neutron_api_odl_charm:
-        neutron_api_odl_charm.render_with_interfaces(args)
-        neutron_api_odl_charm.assess_status()
-
-
 @reactive.when('neutron-plugin-api-subordinate.connected')
 def configure_plugin(api_principle):
-    with charm.provide_charm_instance() as neutron_api_odl_charm:
-        neutron_api_odl_charm.configure_plugin(api_principle)
-        neutron_api_odl_charm.assess_status()
+    with charm.provide_charm_instance() as neutron_api_arista_charm:
+        neutron_api_arista_charm.configure_plugin(api_principle)
+        neutron_api_arista_charm.assess_status()
 
 
-@reactive.when_file_changed(neutron_api_odl.ML2_CONF)
+@reactive.when_file_changed(neutron_api_arista.ML2_CONF)
+@reactive.when('neutron-plugin-api-subordinate.connected')
+def remote_restart(api_principle):
+    api_principle.request_restart()
+
+@reactive.when_file_changed(neutron_api_arista.ML2_CONF_ARISTA)
 @reactive.when('neutron-plugin-api-subordinate.connected')
 def remote_restart(api_principle):
     api_principle.request_restart()

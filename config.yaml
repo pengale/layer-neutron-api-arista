@@ -1,7 +1,7 @@
 options:
   vlan-ranges:
     type: string
-    default: "physnet1:1000:2000"
+    default: "default:1000:2000"
     description: |
       Space-delimited list of Neutron network-provider & vlan-id-ranges using
       the following format "<provider>:<start>:<end> ...".
