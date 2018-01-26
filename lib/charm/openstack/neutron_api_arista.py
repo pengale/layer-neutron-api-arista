@@ -44,7 +44,7 @@ def choose_charm_class():
     return ch_utils.os_release('neutron-common')
 
 
-class IcehouseNeutronAPIARISTACharm(charms_openstack.charm.OpenStackCharm):
+class IcehouseNeutronAPIAristaCharm(charms_openstack.charm.OpenStackCharm):
 
     name = 'neutron-api-arista'
     release = 'icehouse'
@@ -82,7 +82,7 @@ class IcehouseNeutronAPIARISTACharm(charms_openstack.charm.OpenStackCharm):
             subordinate_configuration=inject_config)
 
 
-class KiloNeutronAPIARISTACharm(IcehouseNeutronAPIARISTACharm):
+class KiloNeutronAPIAristaCharm(IcehouseNeutronAPIAristaCharm):
     """For the kilo release we have an additional package to install:
     'python-networking-arista'
     """
@@ -95,7 +95,7 @@ class KiloNeutronAPIARISTACharm(IcehouseNeutronAPIARISTACharm):
                 ]
 
 
-class NewtonNeutronAPIARISTACharm(KiloNeutronAPIARISTACharm):
+class NewtonNeutronAPIAristaCharm(KiloNeutronAPIAristaCharm):
     """For Newton, the service_plugins on the configuration is different.
     """
 
@@ -106,7 +106,7 @@ class NewtonNeutronAPIARISTACharm(KiloNeutronAPIARISTACharm):
                        'neutron_lbaas.services.loadbalancer.'
                        'plugin.LoadBalancerPluginv2')
 
-class PikeNeutronAPIARISTACharm(NewtonNeutronAPIARISTACharm):
+class PikeNeutronAPIAristaCharm(NewtonNeutronAPIAristaCharm):
     """
     Just do the same thing for Pike.
     """
