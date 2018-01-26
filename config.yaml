@@ -6,16 +6,36 @@ options:
       Space-delimited list of Neutron network-provider & vlan-id-ranges using
       the following format "<provider>:<start>:<end> ...".
   overlay-network-type:
-    default: gre
+    default: vlan
     type: string
     description: |
       Overlay network types to use, valid options include:
       .
-        gre
-        vxlan
+      vlan
       .
-      Multiple types can be provided - field is space delimited.
+      Multiple types can be provided in the future - field is space delimited.
   security-groups:
     default: false
     type: boolean
-    description: Enable OpenDayLight managed security groups.
+    description: Enable OVS managed security groups.
+  version:
+    default: "2017.1.3"
+    type: "string"
+    description: "networking-arista driver version. Default: 2017.1.3"
+  eapi-host:
+    default: ""
+    type: "string"
+    description: |
+      Set a comma separated list of IP addresses for each CVX instance. 
+      If CVX has been deployed in a highly available (HA) cluster, 
+      specify each instance IP separated by a comma.
+  eapi-username:
+    default: ""
+    type: "string"
+    description: |
+      EOS command API username. This is required field.
+  eapi-password:
+    default: ""
+    type: "string"
+    description: |
+      EOS command API password. This is required field.

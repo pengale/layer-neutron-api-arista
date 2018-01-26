@@ -16,13 +16,16 @@ import charms_openstack.adapters
 import charms_openstack.charm
 import charmhelpers.contrib.openstack.utils as ch_utils
 
+from charmhelpers.contrib.python.packages import pip_install
+
 
 ML2_CONF = '/etc/neutron/plugins/ml2/ml2_conf.ini'
 ML2_CONF_ARISTA = '/etc/neutron/plugins/ml2/ml2_conf_arista.ini'
 VLAN = 'vlan'
 VXLAN = 'vxlan'
 GRE = 'gre'
-OVERLAY_NET_TYPES = [VXLAN, GRE]
+OVERLAY_NET_TYPES = [VLAN]
+NETWORKING_ARISTA_PACKAGE = 'networking-arista'
 
 
 @charms_openstack.adapters.config_property
@@ -108,4 +111,20 @@ class PikeNeutronAPIARISTACharm(NewtonNeutronAPIARISTACharm):
     Just do the same thing for Pike.
     """
     release = 'pike'
+
+    packages = ['neutron-common',
+                'neutron-plugin-ml2',
+                'python-pip'
+                ]
+    
+
+    def install(self):
+        """ 
+        In addition to other commands, install our arista package.
+        """
+        pip_install(NETWORKING_ARISTA)  # TODO: http proxy? Add version, also.
+
+        super().install()
+
+        
 
