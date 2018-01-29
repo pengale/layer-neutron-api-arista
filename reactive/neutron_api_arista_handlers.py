@@ -31,7 +31,6 @@ charm.use_defaults(
 def configure_plugin(api_principle):
     with charm.provide_charm_instance() as neutron_api_arista_charm:
         neutron_api_arista_charm.configure_plugin(api_principle)
-        neutron_api_odl_charm.render_with_interfaces(args)
         neutron_api_arista_charm.assess_status()
 
 
